@@ -6,15 +6,20 @@ import { Router } from '@angular/router';
 @Component({
   selector: 'app-tasktable',
   standalone: false,
-  
+
   templateUrl: './tasktable.component.html',
   styleUrl: './tasktable.component.css'
 })
 export class TasktableComponent {
-
   taskform: FormGroup;
+  alertMessage: string = '';
+  alertType: 'success' | 'error' = 'success';
 
-  constructor(private taskbuilder: FormBuilder, private createtask: SupabaseService, private router: Router) {
+  constructor(
+    private taskbuilder: FormBuilder,
+    private createtask: SupabaseService,
+    private router: Router
+  ) {
     this.taskform = this.taskbuilder.group({
       name: ['', Validators.required],
       priority: ['', Validators.required],
@@ -25,18 +30,27 @@ export class TasktableComponent {
 
   newtask() {
     if (this.taskform.valid) {
-      console.log(this.taskform.value);
+      const { name, description, duetime, priority } = this.taskform.value;
 
-      this.createtask.submittask(this.taskform.value.name, this.taskform.value.description, this.taskform.value.duetime, this.taskform.value.priority, localStorage.getItem('user_id'))
-        .then((res: any) => {
-          console.log(res);
-          if (res === 'noerror') this.router.navigateByUrl('/dashboard');
-        }).catch((err: any) => {
-          console.log(err);
-        })
-
+      this.createtask
+        .submittask(name, description, duetime, priority, localStorage.getItem('user_id'))
+        .subscribe({
+          next: (res: any) => {
+            if (res === 'noerror') {
+              this.alertMessage = 'Task created successfully!';
+              this.alertType = 'success';
+              this.router.navigateByUrl('/dashboard');
+            }
+          },
+          error: (err: any) => {
+            console.error('Error while creating task:', err);
+            this.alertMessage = 'Failed to create task. Please try again.';
+            this.alertType = 'error';
+          }
+        });
+    } else {
+      this.alertMessage = 'Please fill in all required fields.';
+      this.alertType = 'error';
     }
   }
-
-
 }

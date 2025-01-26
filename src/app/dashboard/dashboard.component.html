@@ -1,20 +1,27 @@
-<div *ngIf="loading">
+<div *ngIf="loading" class="fixed inset-0 bg-gray-900 bg-opacity-90 flex justify-center items-center">
   <app-loading></app-loading>
 </div>
 
-<div class="bg-gray-900 min-h-dvh w-dvw flex flex-col">
-  <div
-    class="z-20 inset-x-0 top-0 bg-gray-800 h-20 w-full text-center fixed shadow-lg flex items-center justify-center text-4xl text-white font-bold leading-none tracking-tight">
+<div class="bg-gray-900 min-h-screen w-screen flex flex-col">
+
+  <div class="z-20 inset-x-0 top-0 bg-gray-800 h-20 w-full text-center fixed shadow-lg flex items-center justify-center text-4xl text-white font-bold leading-none tracking-tight">
     TASK LIST
   </div>
 
-  <div *ngIf="tasks.length >= 1" class="flex flex-col gap-0.5 w-full h-full p-1 mt-20">
+  <button (click)="logout()"
+    class="z-20 p-4 fixed top-2 right-6 flex items-center justify-center bg-red-500 rounded-full hover:bg-red-600 hover:shadow-lg shadow-2xl text-white font-bold leading-none transition duration-300">
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-8 h-8">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 9V5.25A2.25 2.25 0 0 1 10.5 3h6a2.25 2.25 0 0 1 2.25 2.25v13.5A2.25 2.25 0 0 1 16.5 21h-6a2.25 2.25 0 0 1-2.25-2.25V15m-3 0-3-3m0 0 3-3m-3 3H15" />
+    </svg>
+  </button>
+
+  <div *ngIf="tasks.length >= 1" class="flex flex-col gap-2 w-full h-full p-4 mt-20 overflow-y-auto">
     <app-tasks *ngFor="let task of tasks" [val]="task" (delete)="deletetaskcard(task.taskid)"></app-tasks>
   </div>
 
   <button routerLink="/tasktable"
-    class="z-20 p-3 fixed bottom-4 right-4 felx items-center justify-center bg-yellow-500 rounded-full hover:bg-yellow-600 hover:shadow-lg shadow-2xl text-4xl text-center text-black font-bold leading-none">
-    <svg enable-background="new 0 0 50 50" height="20px" width="20px" id="Layer_1" version="1.1" viewBox="0 0 50 50"
+    class="z-20 p-4 fixed bottom-6 right-6 flex items-center justify-center bg-yellow-500 rounded-full hover:bg-yellow-600 hover:shadow-lg shadow-2xl text-4xl text-center text-black font-bold leading-none transition duration-300">
+    <svg enable-background="new 0 0 50 50" height="24px" width="24px" id="Layer_1" version="1.1" viewBox="0 0 50 50"
       xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
       <rect fill="none" height="50" width="50" />
       <line fill="none" stroke="#000000" stroke-miterlimit="10" stroke-width="4" x1="9" x2="41" y1="25" y2="25" />

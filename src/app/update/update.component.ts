@@ -78,7 +78,7 @@ export class UpdateComponent {
         },
         complete: () => {
           if (!error) {
-            this.router.navigate(['dashboard']); 
+            this.router.navigate(['/dashboard']); 
           } else {
             alert('Update failed!');
           }

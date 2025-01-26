@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
-import { createClient, SupabaseClient } from '@supabase/supabase-js'
+import { createClient, SupabaseClient } from '@supabase/supabase-js';
 import { from, Observable } from 'rxjs';
-
 
 @Injectable({
   providedIn: 'root'
@@ -10,67 +9,56 @@ export class SupabaseService {
   private supabase: SupabaseClient;
 
   constructor() {
-    this.supabase = createClient('https://xdsahzxkunzvkdyznwnw.supabase.co', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inhkc2FoenhrdW56dmtkeXpud253Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTg3NzY4NzQsImV4cCI6MjAzNDM1Mjg3NH0.7GhC_1xXE9jpYLD-OS_wzqgsWy-sFFlFu8sWVEHVAtY');
-
+    this.supabase = createClient(
+      'https://xdsahzxkunzvkdyznwnw.supabase.co', 
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inhkc2FoenhrdW56dmtkeXpud253Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTg3NzY4NzQsImV4cCI6MjAzNDM1Mjg3NH0.7GhC_1xXE9jpYLD-OS_wzqgsWy-sFFlFu8sWVEHVAtY'
+    );
   }
 
-
-
-  async register(email: string, password: string) {
-    console.log(this.supabase)
-    let res = await this.supabase.auth.signUp({ "email": email, "password": password });
-    return res;
+  register(email: string, password: string) {
+    return from(this.supabase.auth.signUp({ email, password }));
   }
 
-
-
-  async login(email: string, password: string) {
-    let ress = await this.supabase.auth.signInWithPassword({ email, password });
-    console.log(ress)
-    return ress;
+  login(email: string, password: string) {
+    return from(this.supabase.auth.signInWithPassword({ email, password }));
   }
 
-  async submittask(name: string, desc: string, duetime: number, priority: number, user: string | null) {
-    const { error } = await this.supabase
+  submittask(name: string, desc: string, duetime: number, priority: number, user: string | null) {
+    const result = this.supabase
       .from('tasks')
-      .insert({ name: name, description: desc, duetime: duetime, priority: priority, userid: user })
-    if (error) {
-      console.log('error occured!')
-      return 'err';
-    }
-    else return 'noerror';
+      .insert({ name: name, description: desc, duetime: duetime, priority: priority, userid: user });
+    return from(result);
   }
 
   fetchtask(): Observable<any> {
-    const ress = this.supabase
-      .from('tasks')
-      .select();
-
-    return from(ress);
+    return from(this.supabase.from('tasks').select());
   }
+
   deletetask(name: string) {
-    const res = this.supabase
+    const result = this.supabase
       .from('tasks')
       .delete()
-      .eq('taskid', name)
-    return from(res);
+      .eq('taskid', name);
+    return from(result);
   }
+
   updatetask(name: string, desc: string, duetime: any, priority: number, taskid: string) {
     const result = this.supabase
       .from('tasks')
       .update({ name: name, description: desc, duetime: duetime, priority: priority })
-      .eq('taskid', taskid)
-    console.log(result)
+      .eq('taskid', taskid);
     return from(result);
   }
 
   fetchwithid(taskid: string) {
-    const ress = this.supabase
+    return from(this.supabase
       .from('tasks')
       .select()
-      .eq('taskid', taskid);
-    return from(ress);
+      .eq('taskid', taskid));
+  }
 
+  logout() {
+    const result = this.supabase.auth.signOut();
+    return from(result);
   }
 }
-

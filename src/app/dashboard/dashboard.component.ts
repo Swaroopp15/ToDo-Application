@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { SupabaseService } from '../supabase.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-dashboard',
@@ -9,63 +10,71 @@ import { SupabaseService } from '../supabase.service';
   styleUrl: './dashboard.component.css',
 })
 export class DashboardComponent {
-  tasks: any[] = [];
-  viewtask: boolean = false;
-  viewtaskid: any;
-  loading: boolean = false;  // Flag to show/hide loading spinner
+  tasks: any[] = []; // All tasks
+  filteredTasks: any[] = []; // Tasks filtered by priority
+  selectedPriority: string = 'All'; // Current priority filter
+  loading: boolean = false;
 
-  constructor(private auth: SupabaseService) {}
+  constructor(private auth: SupabaseService, private router: Router) { }
 
   ngOnInit(): void {
     this.fetchtasks();
   }
 
-  // Fetch tasks
+  // Fetch tasks from the server
   fetchtasks() {
-    this.loading = true;  // Show loading spinner while fetching tasks
+    this.loading = true;
     this.auth.fetchtask().subscribe({
       next: (response) => {
         this.tasks = response.data;
-        console.log(response.data);
-        this.viewtaskid = this.tasks[0]?.taskid;
-        this.tasks.sort((a, b) => (a.priority < b.priority ? -1 : 1));
-        console.log(this.tasks);
-        this.loading = false;  // Hide loading spinner after fetching tasks
+        this.filteredTasks = this.tasks; // Initialize with all tasks
+        this.loading = false;
       },
       error: (err) => {
         console.log(err);
-        this.loading = false;  // Hide loading spinner in case of error
+        this.loading = false;
       },
     });
   }
 
-  // Delete task
-  deletetaskcard(name: string) {
-    const isConfirmed = window.confirm('Do you want to delete this task?');
+  // Filter tasks by priority
+  filterTasks(priority: string) {
+    this.selectedPriority = priority;
+    this.filteredTasks =
+      priority === 'All'
+        ? this.tasks
+        : this.tasks.filter((task) => task.priority === priority);
+  }
 
+  // Delete a task
+  deletetaskcard(taskId: string) {
+    const isConfirmed = window.confirm('Do you want to delete this task?');
     if (isConfirmed) {
-      this.loading = true;  // Show loading spinner while deleting task
-      this.auth.deletetask(name).subscribe({
-        next: (res) => {
-          console.log(res);
-          if (res.error === null) {
-            this.fetchtasks();  // Fetch updated tasks after deletion
-          } else {
-            console.log('Error occurred!');
-          }
-          this.loading = false;  // Hide loading spinner after deletion is done
+      this.loading = true;
+      this.auth.deletetask(taskId).subscribe({
+        next: () => {
+          this.tasks = this.tasks.filter((task) => task.taskid !== taskId);
+          this.filterTasks(this.selectedPriority); // Reapply filter
+          this.loading = false;
         },
         error: (err) => {
           console.log(err);
-          this.loading = false;  // Hide loading spinner in case of error
+          this.loading = false;
         },
       });
-    } else {
-      console.log('Task deletion cancelled.');
     }
   }
 
-  closeviewtask() {
-    this.viewtask = false;
+  // Logout the user
+  logout() {
+    this.auth.logout().subscribe({
+      next: () => {
+        localStorage.removeItem('user_id');
+        this.router.navigate(['/login']);
+      },
+      error: (err) => {
+        console.log('Logout failed', err);
+      },
+    });
   }
 }
