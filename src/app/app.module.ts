@@ -10,6 +10,9 @@ import { WelcomeComponent } from './welcome/welcome.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { TasksComponent } from './tasks/tasks.component';
 import { TasktableComponent } from './tasktable/tasktable.component';
+import { UpdateComponent } from './update/update.component';
+import { LoadingComponent } from './loading/loading.component';
+import { AlertComponent } from './alert/alert.component';
 
 @NgModule({
   declarations: [
@@ -19,7 +22,10 @@ import { TasktableComponent } from './tasktable/tasktable.component';
     WelcomeComponent,
     DashboardComponent,
     TasksComponent,
-    TasktableComponent
+    TasktableComponent,
+    UpdateComponent,
+    LoadingComponent,
+    AlertComponent,
   ],
   imports: [
     BrowserModule,
