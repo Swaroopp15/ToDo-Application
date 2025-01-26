@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { createClient, SupabaseClient } from '@supabase/supabase-js'
-import { from,Observable } from 'rxjs';
+import { from, Observable } from 'rxjs';
 
 
 @Injectable({
@@ -41,35 +41,34 @@ export class SupabaseService {
     else return 'noerror';
   }
 
- fetchtask(): Observable<any> {
+  fetchtask(): Observable<any> {
     const ress = this.supabase
       .from('tasks')
       .select();
 
     return from(ress);
   }
-  deletetask(name: string){
-    const res= this.supabase
-    .from('tasks') 
-    .delete()
-    .eq('taskid',name)
+  deletetask(name: string) {
+    const res = this.supabase
+      .from('tasks')
+      .delete()
+      .eq('taskid', name)
     return from(res);
   }
-  updatetask(name :string ,desc : string , duetime: any, priority: number, taskid: string){
-  const result= this.supabase
-    .from('tasks')
-    .update({  name: name, description: desc, duetime: duetime, priority: priority})
-    .eq('taskid', taskid)
+  updatetask(name: string, desc: string, duetime: any, priority: number, taskid: string) {
+    const result = this.supabase
+      .from('tasks')
+      .update({ name: name, description: desc, duetime: duetime, priority: priority })
+      .eq('taskid', taskid)
     console.log(result)
-     return from(result);
+    return from(result);
   }
-    
-  fetchwithid(taskid : string){
+
+  fetchwithid(taskid: string) {
     const ress = this.supabase
       .from('tasks')
       .select()
-      .eq('taskid',taskid);
-      
+      .eq('taskid', taskid);
     return from(ress);
 
   }

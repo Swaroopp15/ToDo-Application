@@ -1,21 +1,24 @@
-<div class="bg-gray-900 min-h-dvh  w-dvw flex flex-col">
+<div *ngIf="loading">
+  <app-loading></app-loading>
+</div>
 
-    <div
-      class="z-20 inset-x-0 top-0 bg-gray-800 h-20 w-full text-center fixed shadow-lg flex items-center justify-center text-4xl text-white font-bold leading-none tracking-tight">
-      TASK LIST
-    </div>
-  
-    <!-- <div *ngIf="tasks.length >= 1" class="flex flex-col gap-0.5 w-full h-full p-1 mt-20">
-      <app-task *ngFor="let task of tasks" [val]="task" (delete)="deletetaskcard(task.taskid)"></app-task>
-    </div> -->
-  
-    <button routerLink="/task"
-      class="z-20 p-3 fixed bottom-4 right-4 felx items-center justify-center bg-yellow-500 rounded-full hover:bg-yellow-600 hover:shadow-lg shadow-2xl text-4xl text-center text-black font-bold leading-none">
-      <svg enable-background="new 0 0 50 50" height="20px" width="20px" id="Layer_1" version="1.1" viewBox="0 0 50 50"
-        xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-        <rect fill="none" height="50" width="50" />
-        <line fill="none" stroke="#000000" stroke-miterlimit="10" stroke-width="4" x1="9" x2="41" y1="25" y2="25" />
-        <line fill="none" stroke="#000000" stroke-miterlimit="10" stroke-width="4" x1="25" x2="25" y1="9" y2="41" />
-      </svg>
-    </button>
+<div class="bg-gray-900 min-h-dvh w-dvw flex flex-col">
+  <div
+    class="z-20 inset-x-0 top-0 bg-gray-800 h-20 w-full text-center fixed shadow-lg flex items-center justify-center text-4xl text-white font-bold leading-none tracking-tight">
+    TASK LIST
   </div>
+
+  <div *ngIf="tasks.length >= 1" class="flex flex-col gap-0.5 w-full h-full p-1 mt-20">
+    <app-tasks *ngFor="let task of tasks" [val]="task" (delete)="deletetaskcard(task.taskid)"></app-tasks>
+  </div>
+
+  <button routerLink="/tasktable"
+    class="z-20 p-3 fixed bottom-4 right-4 felx items-center justify-center bg-yellow-500 rounded-full hover:bg-yellow-600 hover:shadow-lg shadow-2xl text-4xl text-center text-black font-bold leading-none">
+    <svg enable-background="new 0 0 50 50" height="20px" width="20px" id="Layer_1" version="1.1" viewBox="0 0 50 50"
+      xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+      <rect fill="none" height="50" width="50" />
+      <line fill="none" stroke="#000000" stroke-miterlimit="10" stroke-width="4" x1="9" x2="41" y1="25" y2="25" />
+      <line fill="none" stroke="#000000" stroke-miterlimit="10" stroke-width="4" x1="25" x2="25" y1="9" y2="41" />
+    </svg>
+  </button>
+</div>

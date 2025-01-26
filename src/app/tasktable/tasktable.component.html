@@ -1,1 +1,35 @@
-<p>tasktable works!</p>
+<div class="h-screen w-screen overflow-hidden flex justify-center items-center bg-gray-900">
+
+    <form [formGroup]="taskform" (ngSubmit)="newtask()" class="w-full max-w-lg">
+      <div class="shadow-2xl bg-gray-800 grid grid-rows-5 gap-6 px-8 py-10 rounded-lg border border-gray-700">
+  
+        <h1 class="text-center text-yellow-500 text-4xl font-extrabold leading-none tracking-tight">
+          CREATE A TASK
+        </h1>
+  
+        <input
+          class="bg-gray-700 border border-gray-600 rounded-sm focus:ring-yellow-500 focus:border-yellow-500 block w-full p-2 text-white placeholder-gray-400"
+          type="text" name="Taskname" placeholder="Enter the Taskname" formControlName="name">
+  
+        <input
+          class="bg-gray-700 border border-gray-600 rounded-sm focus:ring-yellow-500 focus:border-yellow-500 block w-full p-2 text-white placeholder-gray-400"
+          type="text" name="desc" placeholder="Enter Description" formControlName="description">
+  
+        <input
+          class="bg-gray-700 border border-gray-600 rounded-sm focus:ring-yellow-500 focus:border-yellow-500 block w-full p-2 text-white placeholder-gray-400"
+          type="date" name="duetime" placeholder="Enter the Due Time" formControlName="duetime">
+  
+        <input
+          class="bg-gray-700 border border-gray-600 rounded-sm focus:ring-yellow-500 focus:border-yellow-500 block w-full p-2 text-white placeholder-gray-400"
+          type="number" name="priority" placeholder="Enter the Priority" formControlName="priority">
+  
+        <button type="submit" 
+          class="bg-yellow-500 text-black block w-full p-2 rounded hover:bg-yellow-600 hover:shadow-lg hover:shadow-yellow-500 active:bg-yellow-700 disabled:bg-gray-500 disabled:opacity-70">
+          Done
+        </button>
+  
+      </div>
+    </form>
+    
+  </div>
+  
