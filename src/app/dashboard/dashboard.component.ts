@@ -5,7 +5,7 @@ import { Router } from '@angular/router';
 @Component({
   selector: 'app-dashboard',
   standalone: false,
-
+  
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.css',
 })
@@ -33,6 +33,7 @@ export class DashboardComponent {
       error: (err) => {
         console.log(err);
         this.loading = false;
+        alert('Failed to fetch tasks. Please try again later.'); // User-friendly error
       },
     });
   }
@@ -67,14 +68,17 @@ export class DashboardComponent {
 
   // Logout the user
   logout() {
-    this.auth.logout().subscribe({
-      next: () => {
-        localStorage.removeItem('user_id');
-        this.router.navigate(['/login']);
-      },
-      error: (err) => {
-        console.log('Logout failed', err);
-      },
-    });
+    const isConfirmed = window.confirm('Are you sure you want to logout?');
+    if (isConfirmed) {
+      this.auth.logout().subscribe({
+        next: () => {
+          localStorage.removeItem('user_id');
+          this.router.navigate(['/login']);
+        },
+        error: (err) => {
+          console.log('Logout failed', err);
+        },
+      });
+    }
   }
 }

@@ -1,1 +1,2 @@
-<router-outlet></router-outlet>
+<router-outlet *ngIf="isOnline"></router-outlet>
+<app-no-internet *ngIf="!isOnline"></app-no-internet>

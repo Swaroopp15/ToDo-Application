@@ -1,11 +1,8 @@
+<div *ngIf="active == true">
+  <app-alert type="error" message="Incorrect details or error occurred!"></app-alert>
+</div>
 <div class="h-screen w-screen overflow-hidden flex justify-center items-center bg-gray-900 relative">
  
-
-  <div *ngIf="alertMessage"
-    class="absolute top-10 left-1/2 transform -translate-x-1/2  text-white p-4 rounded-lg  z-50 transition-all duration-500 ease-out">
-
-    <app-alert *ngIf="alertMessage" [type]="alertType" [message]="alertMessage"></app-alert>
-  </div>
 
   <div class="w-full max-w-sm p-6 bg-gray-800 rounded-xl shadow-2xl border-4 border-gray-700 z-10 relative">
     <form [formGroup]="userForm" (ngSubmit)="submitForm()" class="space-y-6">
@@ -32,5 +29,6 @@
     </form>
   </div>
 </div>
+
 
 <router-outlet></router-outlet>

@@ -14,17 +14,13 @@ export class LoginComponent {
 
   specificRoute = 'login';
   userForm: FormGroup;
-  alertMessage: string = '';
-  alertType: string = '';
-  // set: any = localStorage.setItem('user_id', '');
+  active : boolean = false;
 
   constructor(private formbuilder: FormBuilder, private auth: SupabaseService, private router: Router) {
     this.userForm = this.formbuilder.group({
       email: ['', [Validators.required, Validators.pattern("^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$")]],
       password: ['', Validators.required]
     });
-    // console.log(this.set);
-
   }
 
   submitForm() {
@@ -32,33 +28,29 @@ export class LoginComponent {
       this.auth.login(this.userForm.value.email, this.userForm.value.password)
         .subscribe({
           next: (res: any) => {
-            console.log(res);
-            if (res.data && res.data.user) {
+            // console.log(res);
+            if (res.error) {
+              this.active = true;
+              console.log('Login failed!');
+            } else if (res.data && res.data.user) {
               localStorage.setItem('user_id', res.data.user.id);
 
               if (!res.error) {
-                this.alertMessage = 'Login successful!';
-                this.alertType = 'success';
-                setTimeout(() => this.alertMessage = '', 3000);
                 this.router.navigate(['/dashboard']);
-              } else {
-                this.alertMessage = 'Login failed!';
-                this.alertType = 'error';
-                setTimeout(() => this.alertMessage = '', 3000);
+              } else if (res.status === 400) {
+                this.active = true;
+                console.log(this.active);
+                console.log('Login failed!');
               }
             }
           },
           error: (err: any) => {
-            console.log(err);
-            this.alertMessage = 'Incorrect details or error occurred!';
-            this.alertType = 'error';
-            setTimeout(() => this.alertMessage = '', 3000);
+            this.active = true;
+            console.log('Incorrect details or error occurred!', err);
           }
         });
     } else {
-      this.alertMessage = 'Please fill in the form correctly.';
-      this.alertType = 'error';
-      setTimeout(() => this.alertMessage = '', 3000);
+      console.log('Please fill in the form correctly.');
     }
   }
 }

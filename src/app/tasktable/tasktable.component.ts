@@ -22,7 +22,7 @@ export class TasktableComponent {
   ) {
     this.taskform = this.taskbuilder.group({
       name: ['', Validators.required],
-      priority: ['', Validators.required],
+      priority: [null, Validators.required],
       description: [''],
       duetime: ['']
     });
@@ -31,20 +31,26 @@ export class TasktableComponent {
   newtask() {
     if (this.taskform.valid) {
       const { name, description, duetime, priority } = this.taskform.value;
+      const user_id = localStorage.getItem('user_id');
 
       this.createtask
-        .submittask(name, description, duetime, priority, localStorage.getItem('user_id'))
+        .submittask(name, description, duetime, priority, user_id)
         .subscribe({
           next: (res: any) => {
-            if (res === 'noerror') {
+            console.log('Task creation response:', res);  // Log response to debug
+            if (res.data) {
               this.alertMessage = 'Task created successfully!';
               this.alertType = 'success';
               this.router.navigateByUrl('/dashboard');
+            } else if (res.error) {
+              this.alertMessage = 'Failed to create task. Please try again.';
+              this.alertType = 'error';
+              console.error('Supabase error:', res.error);
             }
           },
-          error: (err: any) => {
-            console.error('Error while creating task:', err);
-            this.alertMessage = 'Failed to create task. Please try again.';
+          error: (err) => {
+            console.error('Task creation error:', err);
+            this.alertMessage = 'An error occurred. Please try again.';
             this.alertType = 'error';
           }
         });

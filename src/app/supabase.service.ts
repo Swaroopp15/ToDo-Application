@@ -23,10 +23,22 @@ export class SupabaseService {
     return from(this.supabase.auth.signInWithPassword({ email, password }));
   }
 
-  submittask(name: string, desc: string, duetime: number, priority: number, user: string | null) {
+  submittask(name: string, desc: string, duetime: string, priority: 1 | 2 | 3, user: string | null) {
+    const priorityMap = {
+      1: 'High',
+      2: 'Medium',
+      3: 'Low'
+    };
+  
+    const priorityText = priorityMap[priority]; // Convert number to text
+  
     const result = this.supabase
       .from('tasks')
-      .insert({ name: name, description: desc, duetime: duetime, priority: priority, userid: user });
+      .insert({ 
+        name: name, description: desc, duetime: duetime, priority: priorityText, userid: user 
+      })
+      .select(); 
+  
     return from(result);
   }
 

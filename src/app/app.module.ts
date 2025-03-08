@@ -13,6 +13,7 @@ import { TasktableComponent } from './tasktable/tasktable.component';
 import { UpdateComponent } from './update/update.component';
 import { LoadingComponent } from './loading/loading.component';
 import { AlertComponent } from './alert/alert.component';
+import { NoInternetComponent } from './no-internet/no-internet.component';
 
 @NgModule({
   declarations: [
@@ -26,6 +27,7 @@ import { AlertComponent } from './alert/alert.component';
     UpdateComponent,
     LoadingComponent,
     AlertComponent,
+    NoInternetComponent,
   ],
   imports: [
     BrowserModule,

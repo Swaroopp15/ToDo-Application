@@ -1,0 +1,10 @@
+{
+  "appId": "app.vercel.todostodo",
+  "appName": "Todo's to-do",
+  "webDir": "dist",
+  "plugins": {
+    "SplashScreen": {
+      "launchAutoHide": false
+    }
+  }
+}
